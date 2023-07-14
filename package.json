@@ -1,0 +1,12 @@
+{
+  "name": "binary-search-tree",
+  "version": "1.0.0",
+  "description": "A Build of a Balanced Binary Search Tree",
+  "main": "binary-tree.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
