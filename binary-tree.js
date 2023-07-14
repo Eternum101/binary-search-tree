@@ -158,6 +158,48 @@ class Tree {
             values.push(node.data);
         }
     }
+
+    height(node) {
+        if (!node) return -1;
+        return 1 + Math.max(this.height(node.left), this.height(node.right));
+    }
+
+    depth(node) {
+        let current = this.root; 
+        let depth = 0;
+        while (current) {
+            if (node.data === current.data) {
+                return depth;
+            } else if (node.data < current.data) {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+            depth++;
+        }
+        return null;
+    }
+
+    isBalanced() {
+        return this.checkBalanced(this.root) !== -1; 
+    }
+
+    checkBalanced(node) {
+        if (!node) return 0;
+        const leftHeight = this.checkBalanced(node.left);
+
+        if (leftHeight === -1) return -1;
+        const rightHeight = this.checkBalanced(node.right);
+
+        if (rightHeight === -1) return -1;
+        if (Math.abs(leftHeight - rightHeight) > 1) return -1;
+        return 1 + Math.max(leftHeight, rightHeight);
+    }
+
+    rebalance() {
+        const arr = this.inorder();
+        this.root = this.buildTree(arr, 0, arr.length - 1);
+    }
 }
 
 function prettyPrint(node, prefix = '', isLeft = true) {
@@ -183,3 +225,10 @@ console.log(myTree.postorder());
 
 const node = myTree.find(6);
 console.log(node ? node.data : null);
+
+console.log(myTree.isBalanced());
+
+myTree.rebalance();
+prettyPrint(myTree.root);
+
+console.log(myTree.isBalanced());
