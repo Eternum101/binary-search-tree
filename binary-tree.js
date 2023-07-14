@@ -202,33 +202,4 @@ class Tree {
     }
 }
 
-function prettyPrint(node, prefix = '', isLeft = true) {
-    if (node) {
-        console.log(prefix + (isLeft ? '├──' : '└──') + node.data);
-        prettyPrint(node.left, prefix + (isLeft ? '│   ' : '    '), true);
-        prettyPrint(node.right, prefix + (isLeft ? '│   ' : '    '), false);
-    }
-}
-
-const myTree = new Tree([4, 2, 6, 1, 3, 5, 7]);
-prettyPrint(myTree.root);
-
-myTree.insert(8);
-prettyPrint(myTree.root);
-
-myTree.delete(4);
-prettyPrint(myTree.root);
-
-console.log(myTree.inorder());
-console.log(myTree.preorder());
-console.log(myTree.postorder());
-
-const node = myTree.find(6);
-console.log(node ? node.data : null);
-
-console.log(myTree.isBalanced());
-
-myTree.rebalance();
-prettyPrint(myTree.root);
-
-console.log(myTree.isBalanced());
+module.exports = Tree;
