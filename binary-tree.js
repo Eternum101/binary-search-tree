@@ -6,7 +6,7 @@ class Node {
     }
 }
 
-class tree {
+class Tree {
     constructor(arr) {
         arr = [...new Set(arr)].sort((a,b) => a - b);
         this.root = this.buildTree(arr, 0, arr.length - 1);
@@ -75,6 +75,89 @@ class tree {
             }
         }
     }
+
+    find(value) {
+        let current = this.root;
+        while (current) {
+            if (value === current.data) {
+                return current;
+            } else if (value < current.data) {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+        }
+        return null;
+    }
+
+    levelOrder(fn) {
+        if (!this.root) return [];
+        const queue = [this.root];
+        const values = [];
+
+        while (queue.length) {
+            const node = queue.shift(); 
+            if(fn) {
+                fn(node);
+            } else {
+                values.push(node.data);
+            }
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+        }
+        return values;
+    }
+
+    inorder(fn) {
+        const values = [];
+        this.traverseInOrder(this.root, fn, values);
+        return values; 
+    }
+
+    traverseInOrder(node, fn, values) {
+        if (!node) return; 
+        this.traverseInOrder(node.left, fn, values);
+        if (fn) {
+            fn(node);
+        } else {
+            values.push(node.data);
+        }
+        this.traverseInOrder(node.right, fn, values);
+    }
+
+    preorder(fn) {
+        const values = [];
+        this.traversePreOrder(this.root, fn, values);
+        return values;
+    }
+
+    traversePreOrder(node, fn, values) {
+        if (!node) return;
+        if (fn) {
+            fn(node);
+        } else {
+            values.push(node.data);
+        }
+        this.traversePreOrder(node.left, fn, values);
+        this.traversePreOrder(node.right, fn, values);
+    }
+
+    postorder(fn) {
+        const values = [];
+        this.traversePostOrder(this.root, fn, values);
+        return values;
+    }
+
+    traversePostOrder(node, fn, values) {
+        if (!node) return;
+        this.traversePostOrder(node.left, fn, values); 
+        this.traversePostOrder(node.right, fn, values);
+        if (fn) {
+            fn(node);
+        } else {
+            values.push(node.data);
+        }
+    }
 }
 
 function prettyPrint(node, prefix = '', isLeft = true) {
@@ -85,7 +168,7 @@ function prettyPrint(node, prefix = '', isLeft = true) {
     }
 }
 
-const myTree = new tree([4, 2, 6, 1, 3, 5, 7]);
+const myTree = new Tree([4, 2, 6, 1, 3, 5, 7]);
 prettyPrint(myTree.root);
 
 myTree.insert(8);
@@ -93,3 +176,10 @@ prettyPrint(myTree.root);
 
 myTree.delete(4);
 prettyPrint(myTree.root);
+
+console.log(myTree.inorder());
+console.log(myTree.preorder());
+console.log(myTree.postorder());
+
+const node = myTree.find(6);
+console.log(node ? node.data : null);
